@@ -1,5 +1,5 @@
-FROM jenkins/jenkins:lts
+FROM jenkins/jenkins:latest
 USER root
-RUN apt-get update && apt-get install -y docker.io && rm -rf /var/lib/apt/lists/*
-RUN groupadd -f docker && usermod -aG docker jenkins
+RUN apt-get update && apt-get install -y docker.io
+RUN usermod -aG docker jenkins
 USER jenkins
