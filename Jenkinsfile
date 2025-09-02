@@ -11,6 +11,7 @@ pipeline {
     SONAR_TOKEN    = 'sqp_a4749a0abf33d63b8f52ad673b0694c64e36dd84' // แนะนำให้ย้ายไป Credentials ภายหลัง
   }
 
+  stages {
     stage('Maven Check') {
       steps {
         sh 'docker run --rm ${MAVEN_IMG} mvn -v'
@@ -31,20 +32,20 @@ pipeline {
     }
 
     stage('SonarQube') {
-        steps {
-            sh '''
-            docker run --rm \
-                --add-host=host.docker.internal:host-gateway \
-                --volumes-from ${JENKINS_CTN} \
-                -v /var/jenkins_home/.m2:/root/.m2 \
-                -w "${WORKSPACE}/${PROJECT_DIR}" \
-                ${MAVEN_IMG} mvn -B -V clean verify sonar:sonar \
-                -Dsonar.projectKey=${SONAR_KEY} \
-                -Dsonar.projectName="${SONAR_NAME}" \
-                -Dsonar.host.url=${SONAR_URL} \
-                -Dsonar.token=${SONAR_TOKEN}
-            '''
-        }
+      steps {
+        sh '''
+          docker run --rm \
+            --add-host=host.docker.internal:host-gateway \
+            --volumes-from ${JENKINS_CTN} \
+            -v /var/jenkins_home/.m2:/root/.m2 \
+            -w "${WORKSPACE}/${PROJECT_DIR}" \
+            ${MAVEN_IMG} mvn -B -V clean verify sonar:sonar \
+            -Dsonar.projectKey=${SONAR_KEY} \
+            -Dsonar.projectName="${SONAR_NAME}" \
+            -Dsonar.host.url=${SONAR_URL} \
+            -Dsonar.token=${SONAR_TOKEN}
+        '''
+      }
     }
   }
 }
