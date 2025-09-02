@@ -11,28 +11,6 @@ pipeline {
     SONAR_TOKEN    = 'sqp_a4749a0abf33d63b8f52ad673b0694c64e36dd84' // แนะนำให้ย้ายไป Credentials ภายหลัง
   }
 
-  stages {
-    stage('Show workspace & verify pom') {
-      steps {
-        sh '''
-          echo "== Workspace =="
-          pwd
-          echo "== List root =="
-          ls -la
-          echo "== Check pom.xml at ${PROJECT_DIR} =="
-          ls -la "${WORKSPACE}/${PROJECT_DIR}" || true
-          test -f "${WORKSPACE}/${PROJECT_DIR}/pom.xml" || { echo "[ERR] pom.xml not found at ${WORKSPACE}/${PROJECT_DIR}"; exit 2; }
-        '''
-      }
-    }
-
-    stage('Prep cache') {
-      steps {
-        // เตรียมโฟลเดอร์ cache ของ Maven ในโวลุ่ม Jenkins (ช่วยให้ build เร็วขึ้น)
-        sh 'mkdir -p /var/jenkins_home/.m2'
-      }
-    }
-
     stage('Maven Check') {
       steps {
         sh 'docker run --rm ${MAVEN_IMG} mvn -v'
