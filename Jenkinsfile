@@ -21,7 +21,7 @@ pipeline {
                                     mvn clean verify sonar:sonar \
                                     -Dsonar.projectKey=SonarQube \
                                     -Dsonar.projectName='SonarQube' \
-                                    -Dsonar.host.url=http://localhost:9001 \
+                                    -Dsonar.host.url=http://host.docker.internal:9001/ \
                                     -Dsonar.token=sqp_a4749a0abf33d63b8f52ad673b0694c64e36dd84
                                 '''
             }
